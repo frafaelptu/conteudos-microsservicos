@@ -16,3 +16,6 @@ services:
     environment:
       - RABBITMQ_DEFAULT_USER=rabbitmq
       - RABBITMQ_DEFAULT_PASS=rabbitmq
+    volumes:
+      - ./enabled_plugins:/etc/rabbitmq/enabled_plugins
+      
