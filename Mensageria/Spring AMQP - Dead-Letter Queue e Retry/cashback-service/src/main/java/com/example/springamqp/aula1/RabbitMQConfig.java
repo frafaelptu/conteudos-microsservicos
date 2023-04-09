@@ -31,6 +31,14 @@ public class RabbitMQConfig {
     }
 
     @Bean
+    public Queue queueReprocessamento() {
+        Map<String, Object> args = new HashMap<>();
+        args.put("x-dead-letter-exchange", "orders.v1.order-created.dlx");
+        args.put("x-max-priority", 10);
+        return new Queue("orders.v1.reprocessamento.dlq", true, false, false, args);
+    }
+
+    @Bean
     public Binding binding() {
         Queue queue = queueCashback();
         FanoutExchange exchange = new FanoutExchange("orders.v1.order-created");
