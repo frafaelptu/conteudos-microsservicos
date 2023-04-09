@@ -5,6 +5,8 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.time.Instant;
+import java.util.Date;
 
 @Component
 public class OrderCreatedListener {
@@ -13,7 +15,8 @@ public class OrderCreatedListener {
     public void onOrderCreated(OrderCreatedEvent event) {
         System.out.println("Id recebido " + event.getId());
         System.out.println("Valor recebido " + event.getValue());
-        if (event.getValue().compareTo(new BigDecimal("10000")) > 0){
+        System.out.println(Date.from(Instant.now()));
+        if (event.getValue().compareTo(new BigDecimal("10000")) >= 0){
            throw new RuntimeException("Pedido não pode ser processo id: " + event.getId());
         }
     }

@@ -11,10 +11,12 @@ public class OnReprocessamentoDLQ {
 
     @Autowired
     private RabbitTemplate rabbitTemplate;
-    @RabbitListener(queues = "orders.v1.reprocessamento")
+    @RabbitListener(queues = "orders.reprocessamento.dlq")
     public void onReprocessamento(Message failedMessage){
         String exchange_fila = (String) failedMessage.getMessageProperties().getHeaders().get("x-first-death-exchange");
+        //throw new RuntimeException("Erro reprocessamento");
         rabbitTemplate.convertAndSend(exchange_fila, "", failedMessage);
+
 
     }
 }

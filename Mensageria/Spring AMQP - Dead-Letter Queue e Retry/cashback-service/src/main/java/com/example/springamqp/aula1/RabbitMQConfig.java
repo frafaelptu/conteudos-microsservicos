@@ -26,16 +26,7 @@ public class RabbitMQConfig {
         Map<String, Object> args = new HashMap<>();
         args.put("x-dead-letter-exchange", "orders.v1.order-created.dlx");
         args.put("x-max-priority", 10);
-
         return new Queue("orders.v1.order-created.generate-cashback", true, false, false, args);
-    }
-
-    @Bean
-    public Queue queueReprocessamento() {
-        Map<String, Object> args = new HashMap<>();
-        args.put("x-dead-letter-exchange", "orders.v1.order-created.dlx");
-        args.put("x-max-priority", 10);
-        return new Queue("orders.v1.reprocessamento.dlq", true, false, false, args);
     }
 
     @Bean
@@ -51,10 +42,17 @@ public class RabbitMQConfig {
 
 
     @Bean
-    public Queue queueCashbackDLQ() {
-        return new Queue("orders.v1.order-created.dlx.generate-cashback.dlq");
+    public Queue queueReprocessaDLQ() {
+        Map<String, Object> args = new HashMap<>();
+        args.put("x-dead-letter-exchange", "orders.v1.order-created.dlx");
+        args.put("x-max-priority", 10);
+        return new Queue("orders.reprocessamento.dlq", true, false, false, args);
     }
 
+    @Bean
+    public Queue queueCashbackDLQ() {
+        return new Queue("orders.dead-letter");
+    }
 
     @Bean
     public Binding bindingDLQ() {
